@@ -1,0 +1,257 @@
+{% extends 'base.html' %} {% load static %} {% block content %}
+<style>
+    /* navbar 현재 페이지 표시 */
+    #btn1 {
+        background-color: #735BF2;
+        color: white;
+    }
+
+    #home_logo {
+    width: 30px;
+    height: 30px;
+    background-image: url("{% static 'images/homeOn.png' %}");
+    background-repeat: no-repeat;
+    display: inline-block;
+    padding-right: 10px;
+    }
+
+    #calender_logo {
+    width: 30px;
+    height: 30px;
+    background-image: url("{% static 'images/calender.png' %}");
+    background-repeat: no-repeat;
+    display: inline-block;
+    padding-right: 10px;
+    }
+
+    #project_logo {
+    width: 30px;
+    height: 30px;
+    background-image: url("{% static 'images/project.png' %}");
+    background-repeat: no-repeat;
+    display: inline-block;
+    padding-right: 10px;
+    }
+
+
+</style>
+
+<div id = "rec3">
+    <div class = "container">
+        <div class = "item" id = "timetable_text">시간표</div>
+        <div class = "item" id = "timetable">
+            {% if request.user.is_authenticated %}
+                {% if request.user.profile.timetable %}
+                <img src="{{ request.user.profile.timetable.url }}" style="width: 100%; height: 100%; border-radius: 15px;"/>
+                {% else %}
+
+                <form action="{% url 'mateapp:timetable' %}" id="timetable_form" method="POST" enctype="multipart/form-data">
+                    <div id = "upload_text">시간표 파일을 불러오고<br>
+                    등록을 완료하여 확인하세요.</div>
+                    {%csrf_token%}
+                    <input type="file" name="timetable" id="timetable" accept="image/png" class="custom-file-input" onchange="formSubmit()"><br>
+                </form>
+                {% endif %}
+            {% endif %}
+        </div>
+        
+<!-- 캘린더 섹션 -->
+        <div class = "item" id = "calendar_text">캘린더</div>
+        <div class = "item" id = "calendar">
+            <div class="calendar">
+                <div class="cal_header">
+                    <button class="nav-btn go-prev" onclick="prevMonth()">&lt;</button>
+                    <div class="year-month" ></div>
+                    <button class="nav-btn go-next" onclick="nextMonth()">&gt;</button>
+                    <button class="nav-btn go-today" onclick="goToday()">Today</button>
+                </div>
+                
+                <div class="cal_main">
+                    <div class="days">
+                        <div class="day">Sun</div>
+                        <div class="day">Mon</div>
+                        <div class="day">Tue</div>
+                        <div class="day">Wed</div>
+                        <div class="day">Thu</div>
+                        <div class="day">Fri</div>
+                        <div class="day">Sat</div>
+                    </div>
+                    <div class="dates"></div>
+                </div>
+            </div>
+            <script src="{% static 'js/calendar.js'%}"></script>
+        </div>
+        <div class = "item" id = "schedule_1">
+            {% if calendar.0.title == None %}
+                <div id = 'no_schedule'>아직 등록된 일정이 없어요</div>
+            {% else %} 
+                <div id = "sch1">
+                    <section id = "cal_title" style="color: {{calendar.0.color}}; ">{{calendar.0.title}}</section>
+                    <section id = "cal_body">{{calendar.0.body}}</section>
+                    <section id = "cal_time_place">{{calendar.0.starttime}}~{{calendar.0.endtime}} / {{calendar.0.place}}</section>
+                </div>
+                <div id = "sch1_team">
+                    <div class = "cal_friend1" style=" background-color: {{calendar.0.color}};" id = "sch1_team1" ></div>
+                    <div class = "cal_friend1" style=" background-color: {{calendar.0.color}};" id = "sch1_team2"></div>
+                    <div class = "cal_friend1" style=" background-color: {{calendar.0.color}};" id = "sch1_team3"></div>
+                    <div class = "cal_friend1" style=" background-color: {{calendar.0.color}};" id = "sch1_team4"></div>
+                    <div class = "cal_friend1" style=" background-color: {{calendar.0.color}};" id = "sch1_team5"></div>
+                    <div class = "cal_friend1" style=" background-color: {{calendar.0.color}};" id = "sch1_team6"></div>
+                </div>
+            {% endif %}
+        </div>
+        <div class = "item" id = "schedule_2">
+            {% if calendar.1.title == None %}
+            <div id = 'no_schedule'>아직 등록된 일정이 없어요</div>
+            {% else %} 
+                <div id = "sch2">
+                    <section id = "cal_title2" style="color: {{calendar.1.color}}; ">{{calendar.1.title}}</section>
+                    <section id = "cal_body2">{{calendar.1.body}}</section>
+                    <section id = "cal_time_place2">{{calendar.1.starttime}}~{{calendar.1.endtime}} / {{calendar.1.place}}</section>
+                </div>
+                <div id = "sch2_team">
+                    <div class = "cal_friend2" style="background-color: {{calendar.1.color}};" id = "sch2_team1" ></div>
+                    <div class = "cal_friend2" style="background-color: {{calendar.1.color}};" id = "sch2_team2"></div>
+                    <div class = "cal_friend2" style="background-color: {{calendar.1.color}};" id = "sch2_team3"></div>
+                    <div class = "cal_friend2" style="background-color: {{calendar.1.color}};" id = "sch2_team4"></div>
+                    <div class = "cal_friend2" style="background-color: {{calendar.1.color}};" id = "sch2_team5"></div>
+                    <div class = "cal_friend2" style="background-color: {{calendar.1.color}};" id = "sch2_team6"></div>
+                </div>
+            {% endif %}
+        </div>
+
+
+        <div class = "item" id = "runningmate_text">러닝메이트
+
+            
+        </div>
+        <!-- <img src="{{ user.profile.profile.url }}" width="50px" height="50px"> -->
+        <div class = "item" id = "runningmate">
+            
+            {% for project in projects %}
+
+            {% for follower in project.followers.all %}
+
+            <div id = "f1" style = " width:85px; height:85px; margin-top:0;background-color:; border-radius: 50%; background-image: url({{ follower.profile.profile.url }});
+                background-size: contain;     background-repeat: no-repeat;     background-position: center; background-color:{{project.color}};"><h4 style="margin-top:90px ;"><section style="margin:0;">{{ follower.last_name }}{{ follower.first_name }}</section></h4></div>
+            {% endfor %}
+
+            {% endfor %}
+            <!-- <div id = "f1" style="margin-left: 3vmin;"><div class = "friend" id = "friend1"></div><h4>이영서</h4></div>
+            <div id = "f2"><div class = "friend" id = "friend2"></div><h4>오준서</h4></div>
+            <div id = "f3"><div class = "friend" id = "friend3"></div><h4>윤영서</h4></div>
+            <div id = "f4"><div class = "friend" id = "friend4"></div><h4>김성준</h4></div>
+            <div id = "f5"><div class = "friend" id = "friend5"></div><h4>류슬기</h4></div>
+            <div id = "f6"><div class = "friend" id = "friend6"></div><h4>이예나</h4></div> -->
+
+        </div>
+
+
+
+        <div class = "item" id = "chatting_text">최근 회의
+            {{ profile.profile }}
+        </div>
+        <div class = "item" id = "chatting_1">
+            {% for post in posts %} 
+             
+            {%empty%}
+                <div id = "no_project">아직 등록된 회의가 없어요.</div>
+            {%endfor%}
+           
+            <section id = "recentpro_project" style="color:{{projects.0.color}}">{{posts.0.project}}</section>
+            <section id = "recentpro_title">{{posts.0.title}}</section>
+            <section id = "recentpro_date">{{posts.0.day}}</section>
+
+        </div>
+        <div class = "item" id = "chatting_2">
+            <section id = "recentpro_project" style="color:{{projects.1.color}}">{{posts.1.project}}</section>
+            <section id = "recentpro_title">{{posts.1.title}}</section>
+            <section id = "recentpro_date">{{posts.1.day}}</section>
+
+
+        </div>
+        <div class = "item" id = "chatting_3">
+            <section id = "recentpro_project" style="color:{{projects.2.color}}">{{posts.2.project}}</section>
+            <section id = "recentpro_title" >{{posts.2.title}}</section>
+            <section id = "recentpro_date">{{posts.2.day}}</section>
+
+        </div>
+
+
+<!-- 프로젝트 관리 -->
+        <div class = "item" id = "project_text">프로젝트 관리
+            <section id = "plus" ><a href="{% url 'addproject:newproject' %}" style="text-decoration: none;">+</a></section>
+        </div>            
+        <div class = "item" id = "project">
+
+            {% if projects %}
+            {% for project in projects %}
+
+            
+            
+            <div class="scroll--element" style="background-color: {{project.color}};">
+                <div id = "{{project.id}}">
+                        <h6>{{project.startday}}~{{project.endday}}</h6>
+                        <h2>{{project.title}}</h2>
+                        <h3 style="margin-bottom: 0;">{{project.summary}}</h3>
+                        <div class = "mimoji" style="width: 95% ;text-align:right; ">
+                        
+
+                        {% for follower in project.followers.all %}
+                        <div id = "f1" style = " width:30px; height:30px; margin-top:20px;text-align:right;background-color:; border-radius: 50%; background-image: url({{ follower.profile.profile.url }});
+                        background-size: contain;  background-repeat: no-repeat;  background-position: center; background-color:white;"></div>
+                        {% empty %}
+                        <div id = "f1" style = " width:30px; height:30px; margin-top:20px;text-align:right;background-color:; border-radius: 50%; background-image: url({{ follower.profile.profile.url }});
+                        background-size: contain;  background-repeat: no-repeat;  background-position: center; background-color:white;visibility: hidden "></div>
+
+                           
+                        {% endfor %}
+
+                        </div>
+                </div>
+            </div>
+            {% endfor %}
+            {% else %}
+            <div class="scroll--element" id = "subject1" style="background-color: white;">
+                <div id = "no_project_name">
+                    <p style="margin-bottom: 0;">어떤 과목에서 팀 프로젝트가 진행되나요?</p>
+                    <p style="margin-bottom: 0;">+ 버튼을 눌러 </p>
+                    <p style="margin-bottom: 0;">프로젝트를 추가하고 관리하세요!</p>
+                </div>
+     
+            </div>
+            <div class="scroll--element" id= "subject2" style="background-color: white;">
+                <div id = "no_project_name">
+                    <p style="visibility: hidden;margin-bottom: 0;">이유는 모르겠는데 내용이 안들어가 있으면 정렬이 이상해져서 올립니다. </p>
+                    <p style="visibility: hidden;margin-bottom: 0;">이유는 모르겠는데 내용이 안들어가 있으면 정렬이 이상해져서 올립니다. </p>
+                    <p style="visibility: hidden;margin-bottom: 0;">이유는 모르겠는데 내용이 안들어가 있으면 정렬이 이상해져서 올립니다. </p>
+                </div>
+            </div>
+            <div class="scroll--element" id = "subject3" style="background-color: white">
+                <div id = "no_project_name">
+                    <p style="visibility: hidden;margin-bottom: 0;">이유는 모르겠는데 내용이 안들어가 있으면 정렬이 이상해져서 올립니다. </p>
+                    <p style="visibility: hidden;margin-bottom: 0;">이유는 모르겠는데 내용이 안들어가 있으면 정렬이 이상해져서 올립니다. </p>
+                    <p style="visibility: hidden;margin-bottom: 0;">이유는 모르겠는데 내용이 안들어가 있으면 정렬이 이상해져서 올립니다. </p>
+                </div>
+            </div>
+            <div class="scroll--element" id = "subject4" style="background-color: white">
+                <div id = "no_project_name">
+                    <p style="visibility: hidden;margin-bottom: 0;">이유는 모르겠는데 내용이 안들어가 있으면 정렬이 이상해져서 올립니다. </p>
+                    <p style="visibility: hidden;margin-bottom: 0;">이유는 모르겠는데 내용이 안들어가 있으면 정렬이 이상해져서 올립니다. </p>
+                    <p style="visibility: hidden;margin-bottom: 0;">이유는 모르겠는데 내용이 안들어가 있으면 정렬이 이상해져서 올립니다. </p>
+                </div>
+            </div>
+            {% endif %}
+           
+        </div>
+    </div>
+</div>
+<a href="{% url 'account_logout' %}"><img id = "logout_button" src =  "{% static 'images/logout.png' %}"/></a>
+
+<script>
+    function formSubmit(){
+        timetable_form.submit()
+    }
+</script>
+
+{% endblock %}

@@ -1,0 +1,98 @@
+{% extends 'base.html' %} {% load static %} {% block content %}
+
+<style>
+/* navbar 현재 페이지 표시 */
+    .nav_button {
+        padding: initial;
+        margin: initial;
+        box-sizing: initial;
+        padding-left: 10px;
+        margin-left: 20px;
+        width: 257px;
+    }
+
+    .nav_button span {
+        margin-left: 10px;
+    }
+
+    #btn2 {
+        background-color: #735BF2;
+        color: white;
+    }
+
+    #home_logo {
+        width: 30px;
+        height: 30px;
+        background-image: url("{% static 'images/home.png' %}");
+        background-repeat: no-repeat;
+        display: inline-block;
+        margin-left: 10px;
+    }
+
+    #calender_logo {
+        width: 30px;
+        height: 30px;
+        /* background: #735BF2; */
+        background-image: url("{% static 'images/calenderOn.png' %}");
+        background-repeat: no-repeat;
+        display: inline-block;
+        margin-left: 10px;
+    }
+
+    #project_logo {
+        width: 30px;
+        height: 30px;
+        background-image: url("{% static 'images/project.png' %}");
+        background-repeat: no-repeat;
+        display: inline-block;
+        margin-left: 10px;
+        }
+</style>
+
+<link rel = "stylesheet" href = "{% static 'css/create_schedule.css' %}?after">
+
+<div id="rec3">
+    <div class="rec_today">
+        <h1>투데이</h1>
+        <h2>할 일이 있나요? 일정을 추가해주세요!</h2>
+        <br>
+        <form action="{% url 'mateapp:create_schedule' %}" method="post" enctype="multipart/form-data">
+        {%csrf_token%}
+            <div class="today_wrap">
+                <div class="today_title">
+                    <span>시작일</span><br><br>
+                    <span>마감일</span><br><br>
+                    <span>시간</span><br><br>
+                    <span>과목명</span><br><br>
+                    <span>장소</span><br><br>
+                    <span>일정</span><br><br><br>
+                    <span style="margin-top: 32px;">과목 컬러</span><br>
+                </div>
+
+                <div class="today_content">
+                    <!-- startday 추가 id 값 변경 해야함 -->
+                <input type="date" id="ipt0" name="startday" data-placeholer=" 우측 아이콘 클릭하여 날짜를 입력해주세요" required><br><br>
+                <input type="date" id="ipt1" name="endday" data-placeholer=" 우측 아이콘 클릭하여 날짜를 입력해주세요" required ><br><br>
+                <input type="time" id="ipt2" name="starttime">~<input type="time" id="ipt2" name="endtime"><br><br>
+                <input type="title" id="ipt3" name="title" placeholder="  과목명을 입력해주세요"><br><br>
+                <input type="place" id="ipt5" name="place" placeholder="  장소를 입력해주세요"><br><br>
+                <textarea type="body" id="ipt4" name="body" id="" cols="30" rows="10" placeholder="  일정을 입력해주세요"></textarea><br><br>
+                <div id = "color_select">
+                    <label for="cl1"><input type="radio" name="color" id="cl1" value="#fe7782" onclick=""></label>
+                    <label for="cl2"><input type="radio" name="color" id="cl2" value="#ffbc54" onclick=""></label>
+                    <label for="cl3"><input type="radio" name="color" id="cl3" value="#50cfbc" onclick=""></label>
+                    <label for="cl4"><input type="radio" name="color" id="cl4" value="#45bfff" onclick=""></label>
+                    <label for="cl5"><input type="radio" name="color" id="cl5" value="#735bf2" onclick=""></label>
+                </div>
+                </div>
+            </div>
+            <a href="{% url 'mateapp:calendar' %}" style="text-decoration: none;">
+                <div id="btn">
+                <button type="submit">추가하기</button>
+                </div>
+            </a>         
+        </form>
+    </div>    
+</div>
+<a href="{% url 'account_logout' %}"><img id = "logout_button" src =  "{% static 'images/logout.png' %}" style="position: fixed;"/></a>
+{% endblock %}
