@@ -13,7 +13,7 @@ distlib==0.3.4
 Django==3.2.9
 django-allauth==0.50.0
 django-colorfield==0.7.1
-django-cors-headers==3.13.0
+django-cors-headers==3.10.0
 djangorestframework==3.13.1
 entrypoints==0.3
 filelock==3.6.0
