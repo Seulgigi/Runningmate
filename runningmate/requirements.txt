@@ -16,7 +16,7 @@ django-colorfield==0.7.1
 django-cors-headers==3.10.0
 djangorestframework==3.13.1
 entrypoints==0.3
-filelock==3.6.0
+filelock==3.4.1
 fonttools==4.33.3
 idna==3.3
 ipykernel==6.6.0
